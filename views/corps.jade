@@ -1,0 +1,72 @@
+doctype html
+html(ng-app="cbsApp", lang="en")
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+		
+		link(href="/bower/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
+        link(href="/stylesheets/style.css", rel="stylesheet")   
+
+        // [if lt IE 9] 
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        //[endif]
+        title title
+    body
+		block main
+			div.media(ng-repeat="emp in cbs")
+            .media-left.media-top
+                a(ng-href="/{{emp._id}}")
+                    img.media-object(src="{{emp.photos}}", width="64px", height="64px")
+            .media-body
+                h4.media-heading {{emp.prenom}} {{emp.nom}}
+                    a(ng-click="remove = false;editing = true")
+                        span.glyphicon.glyphicon-pencil.edit
+                    a(ng-click="editing = false;remove = true")
+                        span.glyphicon.glyphicon-remove.remove
+                table.table.table-hover(ng-hide="editing || remove")
+                    tr
+                        th Date de naissance
+                        td.naissance {{emp.naissance}}
+                    tr
+                        th Poste
+                        td.poste {{emp.poste}}
+                    tr
+                        th Salaire
+                        td.salaire {{emp.salaire}}
+                    tr
+                        th Date d'entrée
+                        td.entree {{emp.entree}}
+                    tr
+                        th Email
+                        td.mail {{emp.mail}}
+
+                form(ng-show="editing", ng-submit="modifyItem(emp)")
+                    .form-group
+                        label(for="dateNaissance") Date de naissance
+                        input.form-control#dateNaissance(type="text", placeholder="Saisir la date de naissance", ng-model="emp.naissance")
+                    .form-group
+                        label(for="poste") Poste
+                        input.form-control#post(type="text", placeholder="Saisir le poste", ng-model="emp.poste")
+                    .form-group
+                        label(for="salaire") Salaire
+                        .input-group
+                            input.form-control#salaire(type="text", placeholder="Saisir le salaire", ng-model="emp.salaire")
+                            .input-group-addon €
+                    .form-group
+                        label(for="entree") Date d'entrée
+                        input.form-control#entree(type="text", placeholder="Saisir la date d'entrée'", ng-model="emp.entree")
+                    .form-group
+                        label(for="mail") email
+                        input.form-control#mail(type="email", placeholder="Saisir l'email'", ng-model="emp.mail")
+                    button(type="submit").btn-primary.btn Sauver
+
+                form(ng-show="remove", ng-submit="removeItem(emp)")
+                    .form-group
+                        label(for="sortie") Date de sortie
+                        input.form-control#sortie(type="text", placeholder="Saisir la date de sortie", ng-model="emp.sortie")
+                    .form-group
+                        label(for="motif") Motif
+                        input.form-control#motif(type="text", placeholder="Saisir le motif de sortie'", ng-model="emp.motif")
+                    button(type="submit").btn-primary.btn Sauver
